@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: wordpress
+      metadata: wordpress
+  template:
+    metadata:
+      labels:
+        name: wordpress
+        metadata: wordpress
+    spec:
+      containers:
+      - name: wordpress
+        image: ajinnf/wordpress:1.5
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  namespace: staging
+spec:
+  #type: LoadBalancer
+  ports:
+    - port: 80
+      #nodePort: 30080
+  selector:
+    name: wordpress
+
